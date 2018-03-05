@@ -2,13 +2,13 @@ import numpy as np
 import math
 
 class RBM():
-	learning_rate=0.001
+	learning_rate=0.01
 	aq =0
 
-	def __init__(self):
-		self.w= np.array(np.random.uniform(low=-1, high=1, size=(8, 8)))
-		self.a= np.array(np.random.uniform(low=-1, high=1, size=(8)))#input bias
-		self.b= np.array(np.random.uniform(low=-1, high=1, size=(8)))#output bias
+	def __init__(self, length):
+		self.w= np.array(np.random.uniform(low=-1, high=1, size=(length, length)))
+		self.a= np.array(np.random.uniform(low=-1, high=1, size=(length)))#input bias
+		self.b= np.array(np.random.uniform(low=-1, high=1, size=(length)))#output bias
 
 		#self.inp= [0 for j in range(785)]
 		#self.out= [0 for j in range(785)]
@@ -135,18 +135,13 @@ class RBM():
 		#print bina
 
 
-tt = [1,0,0,1]
+tt = [1,0,0,0,0,0,0,0,0,0,0,0,0,1]
 
-p= RBM()
+p= RBM(len(tt))
 pp = np.random.uniform(low=-1, high=1, size=(8, 8))[:5,:5]
 for i in range(100):
 	p.aq+=1 #counter
 	p.process(tt)
 	
-	rr= p.w[:5, :5]
-	
-	if rr.all() != pp.all():
-		print "yay"
-	pp = rr
 
 
