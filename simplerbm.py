@@ -2,13 +2,13 @@ import numpy as np
 import math
 
 class RBM():
-	learning_rate=1.1
+	learning_rate=0.001
 	aq =0
 
 	def __init__(self):
-		self.w= np.random.uniform(low=-1, high=1, size=(8, 8))
-		self.a= np.random.uniform(low=-1, high=1, size=(8))#input bias
-		self.b= np.random.uniform(low=-1, high=1, size=(8))#output bias
+		self.w= np.array(np.random.uniform(low=-1, high=1, size=(8, 8)))
+		self.a= np.array(np.random.uniform(low=-1, high=1, size=(8)))#input bias
+		self.b= np.array(np.random.uniform(low=-1, high=1, size=(8)))#output bias
 
 		#self.inp= [0 for j in range(785)]
 		#self.out= [0 for j in range(785)]
@@ -62,6 +62,22 @@ class RBM():
 				#print delta
 
 
+	def process(self, v):
+		h= self.forward(v)
+		vPrime = self.back(h)
+		hPrime = self.forward(vPrime)
+
+		posGrad = np.array([v]).transpose()*np.array([h])
+		negGrad = np.array([vPrime]).transpose()*np.array([hPrime])
+		#print "a: ", self.a
+		#print "big: ", self.a[:len(v)].transpose()
+		self.w= np.array(self.w[:len(v), :len(v)]) + self.learning_rate*(posGrad-negGrad)
+		#print self.w
+		#self.a = np.array([self.a[:len(v)]]).transpose()- self.learning_rate*(np.array([v]).transpose()-np.array([vPrime]).transpose())
+		#self.b = np.array([self.b[:len(v)]]).transpose()-self.learning_rate*(np.array([h]).transpose()-np.array([h]).transpose())
+		#print "a: ", self.a
+		#exit()
+		#print self.w[:len(v), :len(v)]
 
 	def forward(self, x):
 		h=[]
@@ -69,6 +85,7 @@ class RBM():
 		for i in range(len(x)):
 			nump = (np.matrix(self.w).transpose()[i])[:1, :len(x)]
 			tot = self.b[i] + np.dot(nump, x).item(0,0)
+			#print "b:", tot
 			tot = self.sigmoid(tot)
 			h.append(tot)
 
@@ -77,12 +94,22 @@ class RBM():
 				bina.append(1)
 			else:
 				bina.append(0)
+
+		return h
 		#print h
 		#print bina
 		#recon = self.back(bina)
-		recon = self.back(h)
+		
+		#recon = self.back(h)
+
+		#At this point we have the following
+		#x is v
+		#h is the hidden later (non-binary)
+		#recon is v', the first construction
+
+
 		#print recon
-		self.training(x, recon)
+		#self.training(x, recon)
 	
 	def back(self, h):
 		x=[]
@@ -100,20 +127,21 @@ class RBM():
 				bina.append(1)
 			else:
 				bina.append(0)
-		if self.aq%100==0:
+		if self.aq%1==0:
+			#print x
 			print bina
 		return x
 		#print x
 		#print bina
 
 
-tt = [1,0,0]
+tt = [1,0,0,1]
 
 p= RBM()
 pp = np.random.uniform(low=-1, high=1, size=(8, 8))[:5,:5]
-for i in range(1):
+for i in range(100):
 	p.aq+=1 #counter
-	p.forward(tt)
+	p.process(tt)
 	
 	rr= p.w[:5, :5]
 	
