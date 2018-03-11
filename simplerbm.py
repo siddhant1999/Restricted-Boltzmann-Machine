@@ -16,7 +16,8 @@ class RBM():
 		#print self.w
 
 	def sigmoid(self, x):
-		try:
+		aaa = math.exp(-x)
+		'''try:
 			aaa = math.exp(-x)
 		except OverflowError:
 			#print "here"
@@ -24,7 +25,7 @@ class RBM():
 				return 1
 			return -1
 		return x
-
+		'''
 		return 1 / (1 + aaa)
 
 	def training(self,v, h):
@@ -63,60 +64,43 @@ class RBM():
 
 
 	def process(self, v):
-		h= self.forward(v)
-		vPrime = self.back(h)
-		hPrime = self.forward(vPrime)
+		h= self.forward(v) #this is the first hidden output
+		vPrime = self.back(h) #reconstructed input
+		hPrime = self.forward(vPrime) #reconstructed output
 
-		posGrad = np.array([v]).transpose()*np.array([h])
-		negGrad = np.array([vPrime]).transpose()*np.array([hPrime])
-		#print "a: ", self.a
-		#print "big: ", self.a[:len(v)].transpose()
+		vTran = np.array([v]).transpose()
+		posGrad = vTran*np.array([h])
+		vPrimeTran = np.array([vPrime]).transpose()
+		negGrad = vPrimeTran*np.array([hPrime])
+
 		self.w= np.array(self.w[:len(v), :len(v)]) + self.learning_rate*(posGrad-negGrad)
-		#print self.w
-		#self.a = np.array([self.a[:len(v)]]).transpose()- self.learning_rate*(np.array([v]).transpose()-np.array([vPrime]).transpose())
-		#self.b = np.array([self.b[:len(v)]]).transpose()-self.learning_rate*(np.array([h]).transpose()-np.array([h]).transpose())
-		#print "a: ", self.a
-		#exit()
-		#print self.w[:len(v), :len(v)]
+		
 
 	def forward(self, x):
 		h=[]
 		bina =[]
 		for i in range(len(x)):
 			nump = (np.matrix(self.w).transpose()[i])[:1, :len(x)]
-			tot = self.b[i] + np.dot(nump, x).item(0,0)
-			#print "b:", tot
+			tot = self.b[i] + np.dot(nump, x).item(0,0) #bias plus the dot product
 			tot = self.sigmoid(tot)
 			h.append(tot)
 
+		'''
 		for i in range(len(h)):
 			if h[i]>0.5:
 				bina.append(1)
 			else:
 				bina.append(0)
-
+		#return bina
+		'''
 		return h
-		#print h
-		#print bina
-		#recon = self.back(bina)
 		
-		#recon = self.back(h)
 
-		#At this point we have the following
-		#x is v
-		#h is the hidden later (non-binary)
-		#recon is v', the first construction
-
-
-		#print recon
-		#self.training(x, recon)
-	
 	def back(self, h):
 		x=[]
 		bina =[]
 		for i in range(len(h)):
 			nump = (np.matrix(self.w)[i])[:1, :len(h)]
-			#print nump
 			tot = self.a[i] + np.dot(nump, h).item(0,0)
 			tot = self.sigmoid(tot)
 			x.append(tot)
@@ -130,15 +114,15 @@ class RBM():
 		if self.aq%1==0:
 			#print x
 			print bina
+
 		return x
-		#print x
-		#print bina
+		#return bina
 
 
 tt = [1,0,0,0,0,0,0,0,0,0,0,0,0,1]
 
 p= RBM(len(tt))
-pp = np.random.uniform(low=-1, high=1, size=(8, 8))[:5,:5]
+#pp = np.random.uniform(low=-1, high=1, size=(8, 8))[:5,:5]
 for i in range(100):
 	p.aq+=1 #counter
 	p.process(tt)
