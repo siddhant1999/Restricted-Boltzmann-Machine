@@ -120,12 +120,16 @@ class RBM():
 
 
 tt = [1,0,0,0,0,0,0,0,0,0,0,0,0,1]
+yy = [1,0,0,0,0,0,0,0,0,1,1,1,1,1]
 
 p= RBM(len(tt))
 #pp = np.random.uniform(low=-1, high=1, size=(8, 8))[:5,:5]
 for i in range(100):
 	p.aq+=1 #counter
+	print "tt",
 	p.process(tt)
+	print "yy",
+	p.process(yy)
 	
 
 
