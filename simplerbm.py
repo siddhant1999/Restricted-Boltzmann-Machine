@@ -2,7 +2,7 @@ import numpy as np
 import math
 
 class RBM():
-	learning_rate=0.01
+	learning_rate=0.1
 	aq =0
 
 	def __init__(self, length):
@@ -10,22 +10,8 @@ class RBM():
 		self.a= np.array(np.random.uniform(low=-1, high=1, size=(length)))#input bias
 		self.b= np.array(np.random.uniform(low=-1, high=1, size=(length)))#output bias
 
-		#self.inp= [0 for j in range(785)]
-		#self.out= [0 for j in range(785)]
-		#self.n[0][0]=1
-		#print self.w
-
 	def sigmoid(self, x):
 		aaa = math.exp(-x)
-		'''try:
-			aaa = math.exp(-x)
-		except OverflowError:
-			#print "here"
-			if x>0:
-				return 1
-			return -1
-		return x
-		'''
 		return 1 / (1 + aaa)
 
 	def training(self,v, h):
@@ -121,7 +107,7 @@ class RBM():
 
 tt = [1,0,0,0,0,0,0,0,0,0,0,0,0,1]
 yy = [1,0,0,0,0,0,0,0,0,1,1,1,1,1]
-
+bb= [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 p= RBM(len(tt))
 #pp = np.random.uniform(low=-1, high=1, size=(8, 8))[:5,:5]
 for i in range(100):
@@ -130,6 +116,8 @@ for i in range(100):
 	p.process(tt)
 	print "yy",
 	p.process(yy)
+	print "bb",
+	p.process(bb)
 	
 
 
