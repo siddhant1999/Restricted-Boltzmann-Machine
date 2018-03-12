@@ -2,29 +2,16 @@ import numpy as np
 import math
 
 class RBM():
-	learning_rate=1.1
+	learning_rate=0.1
 	aq =0
 
-	def __init__(self):
-		self.w= np.random.uniform(low=-1, high=1, size=(8, 8))
-		self.a= np.random.uniform(low=-1, high=1, size=(8))#input bias
-		self.b= np.random.uniform(low=-1, high=1, size=(8))#output bias
-
-		#self.inp= [0 for j in range(785)]
-		#self.out= [0 for j in range(785)]
-		#self.n[0][0]=1
-		#print self.w
+	def __init__(self, length):
+		self.w= np.array(np.random.uniform(low=-1, high=1, size=(length, length)))
+		self.a= np.array(np.random.uniform(low=-1, high=1, size=(length)))#input bias
+		self.b= np.array(np.random.uniform(low=-1, high=1, size=(length)))#output bias
 
 	def sigmoid(self, x):
-		try:
-			aaa = math.exp(-x)
-		except OverflowError:
-			#print "here"
-			if x>0:
-				return 1
-			return -1
-		return x
-
+		aaa = math.exp(-x)
 		return 1 / (1 + aaa)
 
 	def training(self,v, h):
@@ -62,34 +49,44 @@ class RBM():
 				#print delta
 
 
+	def process(self, v):
+		h= self.forward(v) #this is the first hidden output
+		vPrime = self.back(h) #reconstructed input
+		hPrime = self.forward(vPrime) #reconstructed output
+
+		vTran = np.array([v]).transpose()
+		posGrad = vTran*np.array([h])
+		vPrimeTran = np.array([vPrime]).transpose()
+		negGrad = vPrimeTran*np.array([hPrime])
+
+		self.w= np.array(self.w[:len(v), :len(v)]) + self.learning_rate*(posGrad-negGrad)
+		
 
 	def forward(self, x):
 		h=[]
 		bina =[]
 		for i in range(len(x)):
 			nump = (np.matrix(self.w).transpose()[i])[:1, :len(x)]
-			tot = self.b[i] + np.dot(nump, x).item(0,0)
+			tot = self.b[i] + np.dot(nump, x).item(0,0) #bias plus the dot product
 			tot = self.sigmoid(tot)
 			h.append(tot)
 
+		'''
 		for i in range(len(h)):
 			if h[i]>0.5:
 				bina.append(1)
 			else:
 				bina.append(0)
-		#print h
-		#print bina
-		#recon = self.back(bina)
-		recon = self.back(h)
-		#print recon
-		self.training(x, recon)
-	
+		#return bina
+		'''
+		return h
+		
+
 	def back(self, h):
 		x=[]
 		bina =[]
 		for i in range(len(h)):
 			nump = (np.matrix(self.w)[i])[:1, :len(h)]
-			#print nump
 			tot = self.a[i] + np.dot(nump, h).item(0,0)
 			tot = self.sigmoid(tot)
 			x.append(tot)
@@ -100,25 +97,27 @@ class RBM():
 				bina.append(1)
 			else:
 				bina.append(0)
-		if self.aq%100==0:
+		if self.aq%1==0:
+			#print x
 			print bina
+
 		return x
-		#print x
-		#print bina
+		#return bina
 
 
-tt = [1,0,0]
-
-p= RBM()
-pp = np.random.uniform(low=-1, high=1, size=(8, 8))[:5,:5]
-for i in range(1):
+tt = [1,0,0,0,0,0,0,0,0,0,0,0,0,1]
+yy = [1,0,0,0,0,0,0,0,0,1,1,1,1,1]
+bb= [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+p= RBM(len(tt))
+#pp = np.random.uniform(low=-1, high=1, size=(8, 8))[:5,:5]
+for i in range(100):
 	p.aq+=1 #counter
-	p.forward(tt)
+	print "tt",
+	p.process(tt)
+	print "yy",
+	p.process(yy)
+	print "bb",
+	p.process(bb)
 	
-	rr= p.w[:5, :5]
-	
-	if rr.all() != pp.all():
-		print "yay"
-	pp = rr
 
 
