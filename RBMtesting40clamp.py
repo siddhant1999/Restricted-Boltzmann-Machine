@@ -48,11 +48,20 @@ def convert_to_nodes(x):
 def con_predict(x):
 	a=[]
 	for i in range(10):
+		s=[]
+		for j in range(4):
+			s.append(x[i*4+j])
+		t=s[1] + s[2]
+		a.append(t)
+	return a
+	'''
+	for i in range(10):
 		s=0
 		for j in range(4):
 			s+=x[i*4+j]
 		a.append(s)
 	return a
+	'''
 
 print("Number of training examples:", mnist.train.num_examples)
 print("Number of validation examples:", mnist.validation.num_examples)
