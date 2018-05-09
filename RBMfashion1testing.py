@@ -45,7 +45,7 @@ print("Number of testing examples:", mnist.test.num_examples)
 
 beg = time.time()
 weight_matrix = np.array(para.w)
-p =RBM(824, 250, 0.25, weight_matrix, np.array(para.a), np.array(para.b))
+p =RBM(794, 200, 0.1, weight_matrix, np.array(para.a), np.array(para.b))
 
 error_rates =[]
 besterror = 9999
@@ -72,7 +72,7 @@ for i in range(len(mnist.test.images)/slow_down):
 	predict = np.array([rounder(x, piv) for x in plotData[784:]])
 	actual = mnist.test.labels[i]
 	print i
-	if np.argmax(predict) == mnist.test.labels[i]:
+	if np.argmax(predict) == actual:
 		correct+=1
 		
 	total+=1
