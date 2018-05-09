@@ -9,6 +9,7 @@ mnist = input_data.read_data_sets('data/fashion', source_url='http://fashion-mni
 import matplotlib.pyplot as plt
 np.set_printoptions(threshold=sys.maxint)
 
+labels = ['T-shirt', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker' ,'Bag', 'Ankle Boot']
 
 class RBM():
 	#learning_rate=1
@@ -54,14 +55,6 @@ bestnodes = 0
 
 slow_down=1
 
-def rounder(x, piv):
-	if x>piv:
-		return 1.0
-	return 0
-
-#plt.axis([0, 1, 0, 1])
-
-
 correct=0
 total=0
 piv = 0.1
@@ -69,9 +62,42 @@ for i in range(len(mnist.test.images)/slow_down):
 	a= np.append(mnist.test.images[i], np.zeros(10))
 	t= p.forward(a)
 	plotData = p.back(t)
-	predict = np.array([rounder(x, piv) for x in plotData[784:]])
+	predict = plotData[784:]
 	actual = mnist.test.labels[i]
-	print i
+	#print i
+	print np.argmax(predict),
+	if np.argmax(predict) == actual:
+		print "*"
+	else:
+		print ""
+	fi = plt.figure(figsize=(8,8))
+	first_image = plotData[:784]
+	first_image = np.array(first_image, dtype='float')
+	pixels = first_image.reshape((28, 28))
+	fi.add_subplot(2,2, 2)
+	plt.title(labels[np.argmax(predict)])
+	plt.xlabel('Prediction')
+	plt.imshow(pixels, cmap='gray')
+	
+	
+	sec =np.array(mnist.test.images[i], dtype='float')
+	pix = sec.reshape((28, 28))
+	fi.add_subplot(2,2, 1)
+	plt.title(labels[actual])
+	plt.xlabel('Actual')
+	plt.imshow(pix, cmap='gray')
+
+	fi.add_subplot(2,2,3)
+	zz=[0,1,2,3,4,5,6,7,8,9]
+	if np.argmax(predict) == actual:
+		plt.bar(zz, plotData[784:], color='green')
+	else:
+		plt.bar(zz, plotData[784:], color='red')
+	for oo, txt in enumerate(plotData[784:]):
+		plt.annotate(int(txt*100), (zz[oo], plotData[784:][oo]))
+	plt.ylim([0,1])
+	plt.show()
+	
 	if np.argmax(predict) == actual:
 		correct+=1
 		
