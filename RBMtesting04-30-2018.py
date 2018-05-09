@@ -5,38 +5,25 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 import matplotlib.pyplot as plt
-from numba import vectorize
 
-@vectorize(['float32(float32)'], target='cuda')
-def tre(a):
-	return a+1
-
-def abcd(x):
-	return 1.0 / (1.0 + math.exp(-x))
-
-@staticmethod
-def sig(x):
-	return abcd(x)
-	#return 1.0 / (1.0 + math.exp(-x))
 
 class RBM():
 	#learning_rate=1
 	aq =0
 
-	sigmoid = sig
 	def __init__(self, rows, cols, rate):
 		self.w= np.array(np.random.uniform(low=-1, high=1, size=(rows, cols)))
 		self.a= np.array(np.random.uniform(low=-1, high=1, size=(rows)))#input bias
 		self.b= np.array(np.random.uniform(low=-1, high=1, size=(cols)))#output bias
 		self.learning_rate = rate
-	'''
+
 	def sigmoid(self, x):
 		try:
 			aaa = math.exp(-x)
 		except:
 			aaa = 0
 		return 1.0 / (1.0 + aaa)
-	'''
+
 	def process(self, v):
 		h= self.forward(v) #this is the first hidden output
 		vPrime = self.back(h) #reconstructed input
@@ -82,7 +69,7 @@ def convert_to_nodes(x):
 print("Number of training examples:", mnist.train.num_examples)
 print("Number of validation examples:", mnist.validation.num_examples)
 print("Number of testing examples:", mnist.test.num_examples)
-print "Here: ", tre(123)
+
 #p= RBM(784, 5)
 beg = time.time()
 error_rates =[]
@@ -95,7 +82,7 @@ for ttt in range(100, 780, 200):
 		p= RBM(788, ttt, rrrate)
 		count = 0
 		val = 5
-		slow_down=100;
+		slow_down=20;
 	
 		print ttt, rrrate,
 		#Training
