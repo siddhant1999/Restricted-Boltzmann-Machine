@@ -98,26 +98,6 @@ for ttt in range(1):
 		#t1=[]
 		#e=[]
 		errtot = 0
-		for i in range(len(mnist.validation.images)/slow_down):
-			break
-			a= np.append(mnist.validation.images[i], np.zeros(40))
-			t= p.forward(a)
-			plotData = p.back(t)
-			predict = [round(x,4) for x in plotData[784:]]
-			actual = convert_to_nodes(mnist.validation.labels[i])
-			#print ("Experimental", predict)
-			#print ("Theoretical", convert_to_nodes(mnist.validation.labels[i]))
-			#plotData = plotData[:784]
-	
-
-			diff= np.array(actual)-np.array(predict)
-			error= np.dot(diff,diff)
-			#print error
-			#print ("Diff", diff)
-			#t1+=[time.time()-beg]
-			#plt.plot(time.time()-beg, error)
-			#e+=[error]
-			errtot += error
 		print round(errtot,2)
 
 		if errtot<besterror:
@@ -134,7 +114,7 @@ for ttt in range(1):
 		qa =p.a.tolist()
 		qb =p.b.tolist()
 
-		with open("weights.json", 'wb') as outfile:
+		with open("w.json", 'wb') as outfile:
 			outfile.write(json.dumps(','.join(w1)).replace('"', ''))
 			outfile.write(json.dumps(','.join(equ)).replace('"', ''))
 			json.dump(qw, outfile)

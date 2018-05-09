@@ -45,6 +45,14 @@ def convert_to_nodes(x):
 			a.append(x[i])
 	return a
 
+def con_predict(x):
+	a=[]
+	for i in range(10):
+		s=0
+		for j in range(4):
+			s+=x[i*4+j]
+		a.append(s)
+	return a
 
 print("Number of training examples:", mnist.train.num_examples)
 print("Number of validation examples:", mnist.validation.num_examples)
@@ -61,14 +69,6 @@ bestnodes = 0
 
 slow_down=1
 
-def rounder(x, piv):
-	if x>piv:
-		return 1.0
-	return 0
-
-#plt.axis([0, 1, 0, 1])
-
-
 correct=0
 total=0
 piv = 0.5
@@ -76,15 +76,15 @@ for i in range(len(mnist.test.images)/slow_down):
 	a= np.append(mnist.test.images[i], np.zeros(40))
 	t= p.forward(a)
 	plotData = p.back(t)
-	predict = np.array([rounder(x, piv) for x in plotData[784:]])
-	actual = convert_to_nodes(mnist.test.labels[i])
+	predict = con_predict(plotData[784:])
+	actual = mnist.test.labels[i]
 #print i, predict, actual, 
 #print ("Experimental", predict)
 #print ("Theoretical", convert_to_nodes(mnist.validation.labels[i]))
 #plotData = plotData[:784]
-
-	print i
-	if np.array_equal(predict, actual):
+	if i%100==0:
+		print i
+	if np.argmax(predict) ==  np.argmax(actual):
 
 		correct+=1
 		#print "correct: ", correct
