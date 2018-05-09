@@ -65,17 +65,14 @@ for i in range(len(mnist.test.images)/slow_down):
 	predict = plotData[784:]
 	actual = mnist.test.labels[i]
 	#print i
-	print np.argmax(predict),
-	if np.argmax(predict) == actual:
-		print "*"
-	else:
-		print ""
+	
 	fi = plt.figure(figsize=(8,8))
+	
 	first_image = plotData[:784]
 	first_image = np.array(first_image, dtype='float')
 	pixels = first_image.reshape((28, 28))
 	fi.add_subplot(2,2, 2)
-	plt.title(labels[np.argmax(predict)])
+	plt.title(labels[np.argmax(predict)], fontsize=15)
 	plt.xlabel('Prediction')
 	plt.imshow(pixels, cmap='gray')
 	
@@ -83,7 +80,7 @@ for i in range(len(mnist.test.images)/slow_down):
 	sec =np.array(mnist.test.images[i], dtype='float')
 	pix = sec.reshape((28, 28))
 	fi.add_subplot(2,2, 1)
-	plt.title(labels[actual])
+	plt.title(labels[actual], fontsize=15)
 	plt.xlabel('Actual')
 	plt.imshow(pix, cmap='gray')
 
@@ -96,6 +93,29 @@ for i in range(len(mnist.test.images)/slow_down):
 	for oo, txt in enumerate(plotData[784:]):
 		plt.annotate(int(txt*100), (zz[oo], plotData[784:][oo]))
 	plt.ylim([0,1])
+
+	fi.add_subplot(2,2,4)
+	
+	dat = plotData[784:]
+	dat = np.argsort(dat)
+	dat = dat[::-1]
+	strr = ""
+	indexc = 1
+	for ts in dat:
+		strr+= str(indexc)+ ". "
+		strr+=labels[ts]
+		strr+="\n"
+		indexc+=1
+	confid = "Confidence: " + str(int(np.amax(plotData[784:])/np.sum(plotData[784:])*100)) + "%"
+	if np.argmax(predict) == actual:
+		plt.text(0.3,0.93,confid,fontsize=15, color='green')
+	else:
+		plt.text(0.3,0.92,confid,fontsize=15, color='red')
+	plt.text(0.3,0,strr,fontsize=15)
+	
+
+	plt.axis('off')
+
 	plt.show()
 	
 	if np.argmax(predict) == actual:
