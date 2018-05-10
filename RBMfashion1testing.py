@@ -1,3 +1,4 @@
+from random import randint
 import numpy as np
 import math
 import time
@@ -58,7 +59,9 @@ slow_down=1
 correct=0
 total=0
 piv = 0.1
-for i in range(len(mnist.test.images)/slow_down):
+#im =np.random.shuffle(np.array(mnist.test.images))
+for j in range(len(mnist.test.images)/slow_down):
+	i = randint(0, len(mnist.test.images)/slow_downc)
 	a= np.append(mnist.test.images[i], np.zeros(10))
 	t= p.forward(a)
 	plotData = p.back(t)
