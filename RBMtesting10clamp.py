@@ -53,10 +53,7 @@ bestnodes = 0
 
 slow_down=1
 
-def rounder(x, piv):
-	if x>piv:
-		return 1.0
-	return 0
+
 
 #plt.axis([0, 1, 0, 1])
 
@@ -68,7 +65,7 @@ for i in range(len(mnist.test.images)/slow_down):
 	a= np.append(mnist.test.images[i], [0,0,0,0,0,0,0,0,0,0])
 	t= p.forward(a)
 	plotData = p.back(t)
-	predict = np.array([rounder(x, piv) for x in plotData[784:]])
+	predict = np.array(plotData[784:])
 	actual = mnist.test.labels[i]
 #print i, predict, actual, 
 #print ("Experimental", predict)
@@ -76,7 +73,7 @@ for i in range(len(mnist.test.images)/slow_down):
 #plotData = plotData[:784]
 
 	print i
-	if np.array_equal(predict, actual):
+	if np.argmax(predict) == np.argmax(actual):
 
 		correct+=1
 		#print "correct: ", correct

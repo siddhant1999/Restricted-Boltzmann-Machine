@@ -61,7 +61,7 @@ total=0
 piv = 0.1
 #im =np.random.shuffle(np.array(mnist.test.images))
 for j in range(len(mnist.test.images)/slow_down):
-	i = randint(0, len(mnist.test.images)/slow_downc)
+	i = randint(0, len(mnist.test.images)/slow_down)
 	a= np.append(mnist.test.images[i], np.zeros(10))
 	t= p.forward(a)
 	plotData = p.back(t)

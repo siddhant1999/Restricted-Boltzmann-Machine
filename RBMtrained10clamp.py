@@ -120,15 +120,27 @@ for ttt in range(1):
 			bestnodes = ttt
 	
 		error_rates+=[errtot]
+		
 		qw =p.w.tolist()
-		with open("weights.json", 'wb') as outfile:
-			json.dump(qw, outfile)
+		w1=['w']
+		equ=['=']
+		a1=['a']
+		b1=['b']
 		qa =p.a.tolist()
-		with open("a.json", 'wb') as outfile:
+		qb =p.b.tolist()
+
+		with open("weights.json", 'wb') as outfile:
+			outfile.write(json.dumps(','.join(w1)).replace('"', ''))
+			outfile.write(json.dumps(','.join(equ)).replace('"', ''))
+			json.dump(qw, outfile)
+			outfile.write('\n')
+			outfile.write(json.dumps(','.join(a1)).replace('"', ''))
+			outfile.write(json.dumps(','.join(equ)).replace('"', ''))
 			json.dump(qa, outfile)
-    	qb =p.b.tolist()
-    	with open("b.json", 'wb') as outfile:
-    		json.dump(qb, outfile)
+			outfile.write('\n')
+			outfile.write(json.dumps(','.join(b1)).replace('"', ''))
+			outfile.write(json.dumps(','.join(equ)).replace('"', ''))
+    			json.dump(qb, outfile)
 		print p.w
 		print p.a
 		print p.b

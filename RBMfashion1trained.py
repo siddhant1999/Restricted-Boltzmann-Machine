@@ -69,7 +69,7 @@ for ttt in range(1):
 		#rrrate=float(rrr)/20.0
 		#rrrate+=0.18 
 		rrrate=0.1
-		ttt=200
+		ttt=370
 		p= RBM(794, ttt, rrrate)
 		count = 0
 		val = 5
