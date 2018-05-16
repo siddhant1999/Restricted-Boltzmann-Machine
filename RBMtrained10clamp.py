@@ -63,6 +63,7 @@ error_rates =[]
 besterror = 9999
 bestrate = 0
 bestnodes = 0
+decay=0.0000025
 for ttt in range(1):
 	for rrr in range(1):
 		#rrrate=float(rrr)/20.0
@@ -85,6 +86,7 @@ for ttt in range(1):
 				print i
 			#print count, i
 			a=np.append(mnist.train.images[i], s)
+			#p.learning_rate -= decay
 			p.process(a)
 			count+=1
 		#Testing
@@ -92,34 +94,6 @@ for ttt in range(1):
 		#t1=[]
 		#e=[]
 		errtot = 0
-		for i in range(len(mnist.validation.images)/slow_down):
-			break
-			a= np.append(mnist.validation.images[i], [0,0,0,0,0,0,0,0,0,0])
-			t= p.forward(a)
-			plotData = p.back(t)
-			predict = [round(x,2) for x in plotData[784:]]
-			actual = mnist.validation.labels[i]
-			#print ("Experimental", predict)
-			#print ("Theoretical", convert_to_nodes(mnist.validation.labels[i]))
-			#plotData = plotData[:784]
-	
-
-			diff= np.array(actual)-np.array(predict)
-			error= np.dot(diff,diff)
-			#print error
-			#print ("Diff", diff)
-			#t1+=[time.time()-beg]
-			#plt.plot(time.time()-beg, error)
-			#e+=[error]
-			errtot += error
-		print round(errtot,2)
-
-		if errtot<besterror:
-			besterror = errtot
-			bestrate = p.learning_rate
-			bestnodes = ttt
-	
-		error_rates+=[errtot]
 		
 		qw =p.w.tolist()
 		w1=['w']
