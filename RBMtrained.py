@@ -8,10 +8,8 @@ mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 import matplotlib.pyplot as plt
 f= open("may2weights2.txt","w+")
 np.set_printoptions(threshold=sys.maxint)
-class RBM():
-	#learning_rate=1
-	aq =0
 
+class RBM():
 	def __init__(self, rows, cols, rate):
 		self.w= np.array(np.random.uniform(low=-1, high=1, size=(rows, cols)))
 		self.a= np.array(np.random.uniform(low=-1, high=1, size=(rows)))#input bias
