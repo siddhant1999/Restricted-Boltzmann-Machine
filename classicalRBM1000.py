@@ -82,7 +82,7 @@ for ttt in range(100, 710, 10):
 		p= RBM(794, ttt, rrrate)
 		count = 0
 		val = 5
-		slow_down=55;
+		slow_down=550;
 	
 		print ttt, rrrate,
 		#Training
