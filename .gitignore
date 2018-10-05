@@ -9,3 +9,5 @@ mnist_test_10.csv
 .DS_Store
 *.pyc
 *.csv
+.DS_Store
+.DS_Store
